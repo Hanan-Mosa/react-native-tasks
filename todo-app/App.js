@@ -1,27 +1,42 @@
-import { FlatList, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {  Text, TouchableOpacity, View } from 'react-native';
 import { styles } from './styles.js';
-// import { v4 as uuidv4 } from 'uuid';
+import TodoForm from './src/components/TodoForm.js';
+import TodoList from './src/components/TodoList.js';
+import { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function App() {
-  const todos = [
-    { title: 'Task1', description: 'Description 1', id: 1 },
-    { title: 'Task2', description: 'Description 2', id: 2 },
-    { title: 'Task3', description: 'Description 3', id: 3 },
-    { title: 'Task4', description: 'Description 4', id: 4 },
-  ];
-  const Item = ({ item }) => (
-    <View style={{ padding: 10, borderBottomColor: "#aeaeae", borderBottomWidth: 1, width: '100%' }}>
-      <Text style={{ ...styles.text, color: 'black' }}>{item.title}</Text>
-      <Text style={{ ...styles.text, color: 'black', fontSize: 15, padding: 10 }}>{item.description}</Text>
-    </View>
-  );
+ const [todos, setTodos] = useState([]);
+
+ useEffect(() => {
+    const fetchTodos = async () => {
+      try {
+        const storedTodos = await AsyncStorage.getItem('todos');
+        if (storedTodos) {
+          setTodos(JSON.parse(storedTodos));
+        }
+      } catch (error) {
+        console.error('Error fetching todos from AsyncStorage:', error);
+      }
+    };
+    fetchTodos();
+  }, []);
+
+  useEffect(() => {
+    AsyncStorage.setItem('todos', JSON.stringify(todos));
+  }, [todos]);
+
+  const addTodo = (todo) => {
+    setTodos((prevTodos) => [...prevTodos, todo]);
+  }
+  const removeTodo = (id) => {
+    setTodos((prevTodos) => prevTodos.filter(todo => todo.id !== id));
+  }
+
   return (
     <View style={styles.container}>
-      <Text style={styles.headertext}>TODO APP</Text>
-      <TextInput placeholder='todo title' style={styles.input}></TextInput>
-      <TextInput placeholder='todo description' style={styles.input}></TextInput>
-      <TouchableOpacity style={styles.submitBtn}>
-        <Text style={{ ...styles.text, fontSize: 20, fontWeight: 'bold' }}>Submit</Text></TouchableOpacity>
-      <View style={styles.dividerLine}></View>
+       <Text style={styles.headertext}>TODO APP</Text>
+      <TodoForm onSubmit={addTodo} />
+      <View style={styles.dividerLine}/>
       <View style={styles.filterContainer}>
         <TouchableOpacity style={styles.activeFilterBtn} >
           <Text style={{ ...styles.text }}>All</Text>
@@ -33,15 +48,8 @@ export default function App() {
           <Text style={{ ...styles.text, color: 'black' }}>Done</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.dividerLine}></View>
-      <FlatList
-
-        style={{ width: '100%' }}
-        contentContainerStyle={{ alignItems: 'flex-start', paddingHorizontal: 10 }}
-        data={todos}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <Item item={item} />}
-      />
+      <View style={styles.dividerLine}/>
+     {todos.length > 0 && <TodoList todos={todos} onRemove={removeTodo} />}
     </View>
   );
 }

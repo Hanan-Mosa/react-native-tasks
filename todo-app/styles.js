@@ -83,4 +83,15 @@ export const styles = StyleSheet.create({
   doneTodo: {
     textDecorationLine: "line-through",
   },
+  todoItem: {
+    padding: 20,
+    borderColor: "#aeaeae",
+    borderWidth: 1,
+    width: '90%',
+    borderRadius: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    margin: 10,
+  },
 });
