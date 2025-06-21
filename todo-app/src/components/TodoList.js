@@ -2,7 +2,7 @@ import { FlatList } from "react-native";
 import TodoItem from "./TodoItem";
 
 
-const TodoList = ({ todos , onRemove }) => {
+const TodoList = ({ todos , onRemove , onComplete }) => {
 
   return (
    <FlatList
@@ -10,7 +10,7 @@ const TodoList = ({ todos , onRemove }) => {
         contentContainerStyle={{ alignItems: 'flex-start', paddingHorizontal: 10 }}
         data={todos}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <TodoItem  item={item} onRemove={onRemove} />}
+        renderItem={({ item }) => <TodoItem  item={item} onRemove={onRemove} onComplete={onComplete} />}
       />
   )
 }
