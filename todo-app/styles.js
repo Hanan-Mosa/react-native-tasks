@@ -51,13 +51,14 @@ export const styles = StyleSheet.create({
   },
   filterBtn: {
     width: "30%",
-    backgroundColor: "#ffffff",
+    backgroundColor: "#fff",
     height: 40,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 15,
     borderWidth: 1,
     borderColor: "black",
+    color: "black",
   },
   filterText: {
     color: "black",
