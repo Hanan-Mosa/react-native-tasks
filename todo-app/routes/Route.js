@@ -3,15 +3,14 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Settings from '../pages/settings';
 import StackNavigator from './StackNavigator';
 import Feather from '@expo/vector-icons/Feather';
-import HomeScreen from '../pages/HomeScreen';
 
 const Tab = createBottomTabNavigator();
-export const Paths=[
-  {name:'Home', component: HomeScreen},
-  {name:'Settings', component: Settings},
-  {name:'StackNavigator', component: StackNavigator},
-
-]
+export const Paths={
+HOME:"home",
+DETAILS:"todo details",
+StackNavigator:"stack navigator",
+Settings:"settings"
+};
 const Route = () => {
   return (
     <NavigationContainer>
@@ -26,7 +25,7 @@ const Route = () => {
           height: 80,
         },
       }}>
-        <Tab.Screen name={Paths[2].name} component={Paths[2].component} options={{
+        <Tab.Screen name={Paths.StackNavigator} component={StackNavigator} options={{
           tabBarLabel: 'Home',
           tabBarLabelStyle: { fontSize: 14, fontWeight: 'bold' },
           tabBarIcon: ({ color, size, focused }) => (
@@ -34,7 +33,7 @@ const Route = () => {
           ),
         }} />
 
-        <Tab.Screen name={Paths[1].name} component={Paths[1].component} options={{
+        <Tab.Screen name={Paths.Settings} component={Settings} options={{
           tabBarLabel: 'Settings',
           tabBarIcon: ({ color, size, focused }) => (
             <Feather name="settings" size={focused ? size : 20} color={focused ? color : 'black'} />
