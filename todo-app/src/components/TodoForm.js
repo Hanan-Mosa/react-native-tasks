@@ -1,18 +1,22 @@
-import {Text, TextInput, TouchableOpacity } from 'react-native'
+import { Text, TextInput, TouchableOpacity } from 'react-native'
 import { styles } from '../../styles';
-import  { useState } from 'react';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { addTodo } from '../../Redux/Slices/todo_slice';
 
-const TodoForm = ({ onSubmit }) => {
+const TodoForm = () => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
+    const dispatch = useDispatch();
 
     const handleSubmit = () => {
         if (title.trim() && description.trim()) {
-        onSubmit({ title, description , id: Math.random().toString(), completed: false });
-        console.log('New todo added:', { title, description });
-        setTitle('');
-        setDescription('');
-    }
+            const todo = { title, description, id: Math.random().toString(), completed: false }
+            console.log('New todo added:', { title, description });
+            dispatch(addTodo(todo));
+            setTitle('');
+            setDescription('');
+        }
     }
     return (
         <>
